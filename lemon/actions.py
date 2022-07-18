@@ -2,7 +2,6 @@ import os
 import pickle
 import traceback
 import psutil
-import shutil
 import click
 import yaml
 from prettytable import PrettyTable
@@ -16,8 +15,7 @@ from lemon.utils import (
     bold_str,
     ensure_redis,
     severity_to_message,
-    entity_to_message,
-    get_resource
+    entity_to_message
 )
 
 
@@ -35,7 +33,7 @@ def build():
         Entity.Lemonfile, '🍋', 'Building locally')
 
     try:
-        with open('Lemonfile.yml', 'r') as file:
+        with open('Lemonfile.yml') as file:
             meshes = yaml.safe_load(file)
 
         for mesh in meshes:
@@ -183,7 +181,15 @@ def create(name: "str") -> None:
 
     try:
         os.makedirs(name)
-        shutil.copyfile(get_resource('start.py'), f'{name}/{package_name}.py')
+
+        with open(f'{name}/{package_name}.py', 'w') as f:
+            f.write("""from lemon import entrypoint
+
+
+@entrypoint
+async def start():
+    print('Hello, 🍋!')
+""")
 
         with open(f'{name}/setup.py', 'w') as f:
             f.write(f"""from setuptools import setup

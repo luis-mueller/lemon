@@ -1,6 +1,5 @@
 from enum import Enum
 import subprocess
-import os
 import time
 import redis.asyncio as aioredis
 import redis
@@ -57,11 +56,6 @@ def color_str(string: "str", color: "Color"):
 
 def bold_str(text):
     return '\033[1m' + str(text) + '\033[0m'
-
-
-def get_resource(resource: "str"):
-    return os.path.dirname(os.path.realpath(__file__)) + (
-        '/resources/' + resource)
 
 
 def ensure_redis(do_async=False):

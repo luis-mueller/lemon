@@ -5,15 +5,58 @@ from lemon.health import init_health
 from lemon.utils import (
     Entity,
     entity_to_message,
-    get_resource,
     bold_str,
     Severity,
     severity_to_message
 )
-import json
 import redis
 from cerberus import Validator
 import yaml
+
+SCHEMA = {
+    "mesh": {
+        "type": "string",
+        "required": True
+    },
+    "nodes": {
+        "type": "list",
+        "required": True,
+        "schema": {
+            "type": "dict",
+            "required": True,
+            "schema": {
+                "name": {
+                    "type": "string",
+                    "required": True,
+                    "regex": "[A-Za-z0-9_\\-]+"
+                },
+                "node": {
+                    "type": "string",
+                    "regex": "[A-Za-z0-9_\\-]+"
+                },
+                "from": {
+                    "type": "string",
+                    "required": True
+                },
+                "in": {
+                    "type": "string"
+                },
+                "out": {
+                    "type": "string"
+                },
+                "with": {
+                    "type": [
+                        "string",
+                        "list"
+                    ],
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 class BuildFailureException(Exception):
@@ -55,8 +98,7 @@ def build_node(mesh: "str", node: "dict") -> None:
 
 
 def build_mesh(redis_client: "redis.Redis", mesh: "dict") -> None:
-    with open(get_resource('schema.json')) as schema_file:
-        validator = Validator(json.load(schema_file))
+    validator = Validator(SCHEMA)
 
     if not validator.validate(mesh):
         display_validation(validator)

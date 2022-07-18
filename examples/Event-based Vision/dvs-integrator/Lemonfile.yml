@@ -1,0 +1,19 @@
+- mesh: integrate
+  nodes:
+    - name: integrator
+      from: ./
+      with:
+        - -c
+        - /dvs/events
+
+    - name: rosbag-player
+      from: git+https://github.com/pupuis/rosbag-player
+      with:
+        - -f
+        - ./slider_depth_bag
+    
+    - name: image-server
+      from: git+https://github.com/pupuis/image-server
+      with:
+        - /dvs/image
+        - /dvs/time_map
