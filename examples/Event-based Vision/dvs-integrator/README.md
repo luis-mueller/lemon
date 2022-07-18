@@ -24,7 +24,7 @@ Run
 ```shell
 rosbag-convert slider_depth.bag slider_depth_bag -m bag.mapping.yml
 ```
-to convert the `.bag` file for further processing[^2].
+to convert the `.bag` file for further processing[^1].
 
 ## Step 3: Run the mesh
 We are now ready to start the mesh by invoking
@@ -40,6 +40,4 @@ you can verify that all nodes are active.
 ## Step 4: Display the reconstructed images
 Now, open `Foxglove Studio` -> `Open connection` -> `Foxglove WebSocket` and open the URL `ws://localhost:8765`. Then, configure two image panels listening to `/dvs/image` and `dvs/time_map`. For more information about running and configuring Foxglove Studio, see https://foxglove.dev/docs/studio.
 
-[^1]: More datasets at https://rpg.ifi.uzh.ch/ECCV18_stereo_davis.html.
-
-[^2]: You might want to only convert a subset of the provided topics (as we do with `bag.mapping.yml`) or map them to new names. All this is accomplished by the `-m` option. Read more about it [here](https://github.com/pupuis/rosbag-player) or by running `rosbag-convert --help`.
+[^1]: You might want to only convert a subset of the provided topics (as we do with `bag.mapping.yml`) or map them to new names. All this is accomplished by the `-m` option. Read more about it [here](https://github.com/pupuis/rosbag-player) or by running `rosbag-convert --help`.
