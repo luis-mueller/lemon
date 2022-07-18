@@ -212,7 +212,7 @@ namespace py = pybind11;
 
 void greet()
 {{
-    std::cout << "Hello 🍋 from inside C++!\n";
+    std::cout << "Hello 🍋 from inside C++!\\n";
 }}
 
 PYBIND11_MODULE({package_name}_cpp, m)
