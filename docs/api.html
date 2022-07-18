@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>API Reference &#8212; Lemon 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CLI Reference" href="cli.html" />
+    <link rel="prev" title="Lemon 🍋" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="lemon.api.publish">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">publish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lemon.api.publish" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Publish</em> function with a hooked-in redis client. Allows for users
+to call stateless (i.e., no init required), but does not require to set
+up redis client for a every call. The <code class="docutils literal notranslate"><span class="pre">value</span></code> is pickled before
+transmission and can therefore assume any valid python object.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here, the client is initalized once</span>
+<span class="kn">from</span> <span class="nn">lemon</span> <span class="kn">import</span> <span class="n">publish</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">publish</span><span class="p">(</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topic</strong> – Topic to publish to.</p></li>
+<li><p><strong>value</strong> – Value to publish. Can be any python object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">anyone_listening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">topics</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span></dt>
+<dd><p>Helper function to determine whether the given topic has at least
+one subscriber.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>topics</strong> – Topics to check. Returns true if any of the topics is
+subscribed to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Decorator function to indicate the entrypoint of a node.
+This registers the node properly with Lemon’s <cite>process
+monitoring</cite>. Note that unlike <code class="xref py py-func docutils literal notranslate"><span class="pre">lemon.api.subscribe()</span></code>,
+the entrypoint function is not running on init and must be properly
+called from within python. If the node is called without the second
+argument, indicating a mesh, the node should be run without the
+lemon context.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="o">...</span>
+
+<span class="c1"># Call from somewhere</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The entrypoint turns the start of your node into a CLI via the <code class="docutils literal notranslate"><span class="pre">click</span></code>
+API. You can further extend the CLI of your node by extending your
+callback with custom decorators.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--option&#39;</span><span class="p">)</span>
+<span class="nd">@entrypoint</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">option</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="c1"># Call from somewhere</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>will expose the following CLI: <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">mesh</span> <span class="pre">-o/--option</span> <span class="pre">...</span>
+<span class="pre">The</span> <span class="pre">``click</span></code> API allows an arbitrary composition of such
+options and additional CLI arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> – Function to declare as the entrypoint.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Helper function to add a parameter to a subscribing node. Parameters
+are special types of subscriptions that update some state in a node
+and are exposed via a dedicated API (see more below).</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">StatefulNode</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="n">StatefulNode</span><span class="p">()</span>
+
+<span class="n">subscribe</span><span class="p">(</span>
+    <span class="o">**</span><span class="k">await</span> <span class="n">parameter</span><span class="p">(</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">update_ratio</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">ratio</span></code> is initialized with the initial value 0.5 (you don’t
+need to do this yourself) and is subsequently updated.</p>
+<p>For more information about how to control the parameter from outside of
+the node, see <code class="xref py py-func docutils literal notranslate"><span class="pre">lemon.params.parameters()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of the parameter.</p></li>
+<li><p><strong>value</strong> – Initial value of the parameter. Can be any python object.</p></li>
+<li><p><strong>fn</strong> – Callback function that updates the value</p></li>
+<li><p><strong>shared</strong> – Parameters can be shared across a mesh. Set <code class="docutils literal notranslate"><span class="pre">shared</span></code> to
+True if you want to use these kinds of global variables.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">run_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Adapted from: <a class="reference external" href="https://github.com/foxglove/ws-protocol/'s">https://github.com/foxglove/ws-protocol/’s</a>
+<code class="docutils literal notranslate"><span class="pre">run_cancellable</span></code>. Didn’t want to make <code class="docutils literal notranslate"><span class="pre">foxglove-webserver</span></code>
+a dependency just for this function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_to_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span></dt>
+<dd><p><em>Subscribe</em> function to register a set of topic-to-callback pairs
+for subscription. It is important to subscribe to every topic at once
+via this function, so that the asynchronous processing can kick in.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">image_hook</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="k">await</span> <span class="n">subscribe</span><span class="p">({</span><span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="n">image_hook</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>listens to the <em>image</em> topic and calls <code class="docutils literal notranslate"><span class="pre">image_hook</span></code> on new messages.</p>
+<p>It might happen that your node is processing incoming events too slowly.
+In this case the subscription will successively drop events until
+it can keep up with the event stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>topic_to_fn</strong> – Mapping of topics to callback.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Lemon</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Lemon 🍋</a></li>
+      <li>Next: <a href="cli.html" title="next chapter">CLI Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Luis Müller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
