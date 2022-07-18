@@ -38,35 +38,9 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<dl class="py function">
-<dt class="sig sig-object py" id="lemon.api.publish">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">publish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lemon.api.publish" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Publish</em> function with a hooked-in redis client. Allows for users
-to call stateless (i.e., no init required), but does not require to set
-up redis client for a every call. The <code class="docutils literal notranslate"><span class="pre">value</span></code> is pickled before
-transmission and can therefore assume any valid python object.</p>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here, the client is initalized once</span>
-<span class="kn">from</span> <span class="nn">lemon</span> <span class="kn">import</span> <span class="n">publish</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">publish</span><span class="p">(</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>topic</strong> – Topic to publish to.</p></li>
-<li><p><strong>value</strong> – Value to publish. Can be any python object.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">anyone_listening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">topics</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span></dt>
+<span class="target" id="module-lemon.api"></span><dl class="py function">
+<dt class="sig sig-object py" id="lemon.api.anyone_listening">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">anyone_listening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">topics</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#lemon.api.anyone_listening" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper function to determine whether the given topic has at least
 one subscriber.</p>
 <dl class="field-list simple">
@@ -78,11 +52,11 @@ subscribed to.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py" id="lemon.api.entrypoint">
+<span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lemon.api.entrypoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator function to indicate the entrypoint of a node.
 This registers the node properly with Lemon’s <cite>process
-monitoring</cite>. Note that unlike <code class="xref py py-func docutils literal notranslate"><span class="pre">lemon.api.subscribe()</span></code>,
+monitoring</cite>. Note that unlike <a class="reference internal" href="#lemon.api.subscribe" title="lemon.api.subscribe"><code class="xref py py-func docutils literal notranslate"><span class="pre">lemon.api.subscribe()</span></code></a>,
 the entrypoint function is not running on init and must be properly
 called from within python. If the node is called without the second
 argument, indicating a mesh, the node should be run without the
@@ -122,8 +96,8 @@ options and additional CLI arguments.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py" id="lemon.api.parameter">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lemon.api.parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper function to add a parameter to a subscribing node. Parameters
 are special types of subscriptions that update some state in a node
 and are exposed via a dedicated API (see more below).</p>
@@ -157,16 +131,34 @@ True if you want to use these kinds of global variables.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">run_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Adapted from: <a class="reference external" href="https://github.com/foxglove/ws-protocol/'s">https://github.com/foxglove/ws-protocol/’s</a>
-<code class="docutils literal notranslate"><span class="pre">run_cancellable</span></code>. Didn’t want to make <code class="docutils literal notranslate"><span class="pre">foxglove-webserver</span></code>
-a dependency just for this function.</p>
+<dt class="sig sig-object py" id="lemon.api.publish">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">publish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lemon.api.publish" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Publish</em> function with a hooked-in redis client. Allows for users
+to call stateless (i.e., no init required), but does not require to set
+up redis client for a every call. The <code class="docutils literal notranslate"><span class="pre">value</span></code> is pickled before
+transmission and can therefore assume any valid python object.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here, the client is initalized once</span>
+<span class="kn">from</span> <span class="nn">lemon</span> <span class="kn">import</span> <span class="n">publish</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">publish</span><span class="p">(</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topic</strong> – Topic to publish to.</p></li>
+<li><p><strong>value</strong> – Value to publish. Can be any python object.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_to_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py" id="lemon.api.subscribe">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lemon.api.</span></span><span class="sig-name descname"><span class="pre">subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_to_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#lemon.api.subscribe" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>Subscribe</em> function to register a set of topic-to-callback pairs
 for subscription. It is important to subscribe to every topic at once
 via this function, so that the asynchronous processing can kick in.</p>

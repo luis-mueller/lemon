@@ -7,8 +7,5 @@ API Reference
    :caption: Contents:
 
 .. automodule:: lemon.api
-   :exclude-members: publish
-   :noindex: publish
+   :exclude-members: run_node
    :members:
-   
-   .. autofunction:: publish(topic: "str", value)
