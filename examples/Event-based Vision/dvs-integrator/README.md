@@ -6,7 +6,7 @@ This node uses `C++` for processing events one-by-one in `integrator.cpp` and `P
 Further, events are obtained via the [rosbag-player](https://github.com/pupuis/rosbag-player) and displayed via the [`image-server`](https://github.com/pupuis/image-server). The `image-server` provides a websocket to the excellent (and free) [Foxglove Studio](https://foxglove.dev/), so make sure to download the app or use it online in `Chrome`.
 
 ## Step 0: Install
-Before getting started, make sure to have installed `Lemon` as described [here](https://github.com/pupuis/lemon).
+Before getting started, make sure to have installed `Lemon` as described [here](https://github.com/pupuis/lemon#install).
 
 ## Step 1: Build the *integrate* mesh
 The `Lemonfile.yml` already contains a mesh definiton `integrate` that connects the above nodes.
