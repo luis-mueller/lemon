@@ -6,15 +6,16 @@ import numpy as np
 
 
 def minMaxLocRobust(image, discard):
-    # TODO #
-    pass
+    values = np.sort(image, axis=None)
+    min_idx = int(.5*discard * values.shape[0])
+    max_idx = int((1-.5*discard) * values.shape[0])
+    return values[min_idx], values[max_idx]
 
 
-def normalize(image: "np.ndarray"):
-    min_, max_ = image.min(), image.max()  # TODO: Compute robust min/max ###
+def normalize(image):
+    min_, max_ = minMaxLocRobust(image, 0.05)
     scale = 255 / (max_ - min_) if (min_ != max_) else 1
-    # TODO: Make sure values are within [0, 255] #
-    return scale * (image - min_)
+    return np.clip(scale * (image - min_), 0, 255)
 
 
 def to_sec(timestamp):
@@ -50,14 +51,15 @@ class Integrator:
         collect_events(msg['events'], self.alpha, self.time_map, self.image)
 
         self.time_last = to_sec(msg['events'][-1]['ts'])
-        # TODO: Compute decayed image from alpha, time_map & time_last #
-        image_out = self.image
+        decay = np.exp(-self.alpha * (self.time_last - self.time_map))
+        image_out = self.image * decay
 
         ts = get_average_ts(msg)
+        # TODO: Determine the topic name based on the camera side #
         await publish('/dvs/image', (normalize(image_out), ts))
         await publish('/dvs/time_map', (normalize(self.time_map), ts))
 
-
+# TODO: Instance this node with the camera side #
 @click.option('-c', '--camera')
 @entrypoint
 async def start(camera):

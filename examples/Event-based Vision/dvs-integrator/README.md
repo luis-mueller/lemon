@@ -1,9 +1,15 @@
-# Workshop: DVS-Integrator 🍋
-Event-based vision image reconstruction based on [Scheerlinck et al., 2018](https://www.cedricscheerlinck.com/continuous-time-intensity-estimation) in Lemon.
+# Workshop II: DVS-Integrator Stereo 🍋
+The second tutorial is about extending the `integrate` mesh to run parallel integrators for a
+stereo camera, i.e., run one `integrator` for the left-side events and one `integrator` for the right-side events.
 
-This node uses `C++` for processing events one-by-one in `integrator.cpp` and `Python` for computing the leaky integrator in `integrator.py`.
+So far we have not taken a look at `bag.mapping.yml`:
+```yaml
+/davis/right/events: /dvs/events
+```
+It defines a mapping for the `rosbag-convert` tool, telling it to only convert events `/davis/right/events/` and rename them to
+`/dvs/events`. We did this to have a convenient interface in the single `integrator` from the previous tutorial.
 
-Further, events are obtained via the [rosbag-player](https://github.com/pupuis/rosbag-player) and displayed via the [`image-server`](https://github.com/pupuis/image-server). The `image-server` provides a websocket to the excellent (and free) [Foxglove Studio](https://foxglove.dev/), so make sure to download the app or use it online in `Chrome`.
+This tutorial will now require you to extend the mesh to support two event sources: left-side and right-side events.
 
 ## Step 0: Install
 Before getting started, make sure to have installed `Lemon` as described [here](https://github.com/pupuis/lemon#install).
@@ -15,9 +21,9 @@ cd lemon/examples/Event-based\ Vision/dvs-integrator/
 ```
 and continue this tutorial from there.
 
-## Step 1: Build the *integrate* mesh
-The `Lemonfile.yml` already contains a mesh definiton `integrate` that connects the above nodes.
-Run
+## Step 1: Extend and build the *integrate* mesh
+The `Lemonfile.yml` already contains a mesh definiton `integrate` that connects the above nodes. However, we now want two
+instances of the `integrator` node, one for each camera side. Adjust these settings in the `Lemonfile.yml` and then run
 ```shell
 lemon build
 ```
@@ -31,7 +37,7 @@ Run
 ```shell
 rosbag-convert simulation_3planes.bag simulation_3planes_bag -m bag.mapping.yml
 ```
-to convert the `.bag` file for further processing[^1].
+to convert the `.bag` file for further processing. Here we will need a new `bag.mapping.yml` that converts the left and right-side events. Renaming them is optional.
 
 ## Step 3: Run the mesh
 We are now ready to start the mesh by invoking

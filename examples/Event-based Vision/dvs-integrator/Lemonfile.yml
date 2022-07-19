@@ -1,6 +1,7 @@
 - mesh: integrate
   nodes:
-    - name: integrator
+    - name: integrator # unique id of the instance
+      node: integrator # name of the python package (can be instanced multiple times)
       from: ./
       with:
         - -c
