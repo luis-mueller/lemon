@@ -1,2 +1,2 @@
-/davis/right/events: /dvs/events
-# TODO: Also convert the left side events #
+/davis/right/events: /davis/right/events
+/davis/left/events: /davis/left/events

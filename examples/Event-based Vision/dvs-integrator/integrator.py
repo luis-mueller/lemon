@@ -27,9 +27,10 @@ def get_average_ts(msg):
 
 
 class Integrator:
-    def __init__(self):
+    def __init__(self, side):
         self.alpha = 7.0
         self.time_last = 0
+        self.side = side
 
     async def set_alpha(self, alpha):
         print(f"New alpha: {alpha}")
@@ -43,7 +44,9 @@ class Integrator:
             self.image = np.zeros(shape)
 
     async def receive_events(self, msg):
-        if not await anyone_listening('/dvs/image', '/dvs/time_map'):
+        img_topic = f'/davis/{self.side}/image'
+        tma_topic = f'/davis/{self.side}/time_map'
+        if not await anyone_listening(img_topic, tma_topic):
             return
 
         self.init_if_needed(msg)
@@ -55,17 +58,17 @@ class Integrator:
         image_out = self.image * decay
 
         ts = get_average_ts(msg)
-        # TODO: Determine the topic name based on the camera side #
-        await publish('/dvs/image', (normalize(image_out), ts))
-        await publish('/dvs/time_map', (normalize(self.time_map), ts))
+        await publish(img_topic, (normalize(image_out), ts))
+        await publish(tma_topic, (normalize(self.time_map), ts))
 
-# TODO: Instance this node with the camera side #
-@click.option('-c', '--camera')
+
+
+@click.option('-s', '--side')
 @entrypoint
-async def start(camera):
-    i = Integrator()
+async def start(side):
+    i = Integrator(side)
 
     await subscribe({
-        camera: i.receive_events,
+        f'/davis/{side}/events': i.receive_events,
         **await parameter('alpha', 5.0, i.set_alpha)
     })

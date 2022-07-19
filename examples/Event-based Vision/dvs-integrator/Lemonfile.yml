@@ -1,11 +1,18 @@
 - mesh: integrate
   nodes:
-    - name: integrator # unique id of the instance
+    - name: right-integrator # unique id of the instance
       node: integrator # name of the python package (can be instanced multiple times)
       from: ./
       with:
-        - -c
-        - /dvs/events
+        - -s
+        - right
+
+    - name: left-integrator # unique id of the instance
+      node: integrator # name of the python package (can be instanced multiple times)
+      from: ./
+      with:
+        - -s
+        - left
 
     - name: rosbag-player
       from: git+https://github.com/pupuis/rosbag-player
@@ -16,5 +23,8 @@
     - name: image-server
       from: git+https://github.com/pupuis/image-server
       with:
-        - /dvs/image
-        - /dvs/time_map
+        - /davis/right/image
+        - /davis/right/time_map
+        - /davis/left/image
+        - /davis/left/time_map
+  
