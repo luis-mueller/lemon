@@ -8,6 +8,13 @@ Further, events are obtained via the [rosbag-player](https://github.com/pupuis/r
 ## Step 0: Install
 Before getting started, make sure to have installed `Lemon` as described [here](https://github.com/pupuis/lemon#install).
 
+Further, one way to work with this example is work directly within the cloned repository, i.e., run
+
+```shell
+cd lemon/examples/Event-based\ Vision/dvs-integrator/
+```
+and continue this tutorial from there.
+
 ## Step 1: Build the *integrate* mesh
 The `Lemonfile.yml` already contains a mesh definiton `integrate` that connects the above nodes.
 Run
@@ -39,5 +46,12 @@ you can verify that all nodes are active.
 
 ## Step 4: Display the reconstructed images
 Now, open `Foxglove Studio` -> `Open connection` -> `Foxglove WebSocket` and open the URL `ws://localhost:8765`. Then, configure two image panels listening to `/dvs/image` and `dvs/time_map`. For more information about running and configuring Foxglove Studio, see https://foxglove.dev/docs/studio.
+
+## Step 5: Cleanup
+Once you are done, you can let the nodes shutdown gracefully by running
+
+```shell
+lemon stop integrate
+```
 
 [^1]: You might want to only convert a subset of the provided topics (as we do with `bag.mapping.yml`) or map them to new names. All this is accomplished by the `-m` option. Read more about it [here](https://github.com/pupuis/rosbag-player) or by running `rosbag-convert --help`.

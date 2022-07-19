@@ -135,3 +135,7 @@ Mesh example: Showing health
 |   receiver    |   receiver    | SHUTDOWN |          |            |
 +---------------+---------------+----------+----------+------------+
 ```
+
+**NEXT STEPS** Check out the [documentation](https://pupuis.github.io/lemon/) to find the CLI and API references.
+
+GLHF!
