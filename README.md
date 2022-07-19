@@ -38,6 +38,8 @@ declares a mesh `example` with nodes `greeter` and `receiver`, located at `./gre
 
 ```python
 # greeter/greeter.py
+from lemon import entrypoint, publish
+
 @entrypoint
 async def main():
     await publish('greeter-artifact', {'Greeting': 'Hello, 🍋!'})
@@ -47,6 +49,8 @@ which publishes a message (which can be any python object) to topic `greeter-art
 
 ```python
 # receiver/receiver.py
+from lemon import entrypoint, subscribe
+
 async def on_receive(message):
     greeting = message['Greeting']
     print(f'Received greeting: {greeting}')
