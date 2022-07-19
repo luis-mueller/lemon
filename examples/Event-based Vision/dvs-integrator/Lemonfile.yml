@@ -10,7 +10,7 @@
       from: git+https://github.com/pupuis/rosbag-player
       with:
         - -f
-        - ./slider_depth_bag
+        - ./simulation_3planes_bag
     
     - name: image-server
       from: git+https://github.com/pupuis/image-server

@@ -1,4 +1,4 @@
-# Example: DVS-Integrator 🍋
+# Workshop: DVS-Integrator 🍋
 Event-based vision image reconstruction based on [Scheerlinck et al., 2018](https://www.cedricscheerlinck.com/continuous-time-intensity-estimation) in Lemon.
 
 This node uses `C++` for processing events one-by-one in `integrator.cpp` and `Python` for computing the leaky integrator in `integrator.py`.
@@ -24,12 +24,12 @@ lemon build
 from the command line to install the nodes and configure the mesh with `Lemon`.
 
 ## Step 2: Prepare the data
-First, download a [slider-depth](http://rpg.ifi.uzh.ch/datasets/davis/slider_depth.bag) dataset for event-based processing.
+First, download the [simulation-3planes](https://rpg.ifi.uzh.ch/datasets/eccv18_stereo_davis/bags/simulation_3planes.bag) dataset for event-based processing.
 
 Now, in order to process this file with the `rosbag-player`, we need to convert the `.bag` file via `rosbag-convert` which comes pre-installed with the `rosbag-player`.
 Run
 ```shell
-rosbag-convert slider_depth.bag slider_depth_bag -m bag.mapping.yml
+rosbag-convert simulation_3planes.bag simulation_3planes_bag -m bag.mapping.yml
 ```
 to convert the `.bag` file for further processing[^1].
 
@@ -54,4 +54,4 @@ Once you are done, you can let the nodes shutdown gracefully by running
 lemon stop integrate
 ```
 
-[^1]: You might want to only convert a subset of the provided topics (as we do with `bag.mapping.yml`) or map them to new names. All this is accomplished by the `-m` option. Read more about it [here](https://github.com/pupuis/rosbag-player) or by running `rosbag-convert --help`.
+[^1]: You might want to only convert a subset of the provided topics or map them to new names (both of which we do with `bag.mapping.yml`). All this is accomplished by the `-m` option. Read more about it [here](https://github.com/pupuis/rosbag-player) or by running `rosbag-convert --help`.
