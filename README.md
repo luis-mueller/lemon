@@ -136,6 +136,6 @@ Mesh example: Showing health
 +---------------+---------------+----------+----------+------------+
 ```
 
-**NEXT STEPS** Check out the [documentation](https://pupuis.github.io/lemon/) to find the CLI and API references.
+**NEXT STEPS** Check out the [documentation](https://pupuis.github.io/lemon/).
 
 GLHF!
