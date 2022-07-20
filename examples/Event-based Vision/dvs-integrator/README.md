@@ -13,7 +13,10 @@ This tutorial will now require you to extend the mesh to support two event sourc
 
 ## Step 0: Install
 Before getting started, make sure to have installed `Lemon` as described [here](https://github.com/pupuis/lemon#install).
-
+Make sure to checkout the `workshop-II` branch:
+```shell
+git checkout workshop-II
+```
 Further, one way to work with this example is work directly within the cloned repository, i.e., run
 
 ```shell
