@@ -7,7 +7,10 @@ Further, events are obtained via the [rosbag-player](https://github.com/pupuis/r
 
 ## Step 0: Install
 Before getting started, make sure to have installed `Lemon` as described [here](https://github.com/pupuis/lemon#install).
-
+Make sure to checkout the `workshop-I` branch:
+```shell
+git checkout workshop-I
+```
 Further, one way to work with this example is work directly within the cloned repository, i.e., run
 
 ```shell
